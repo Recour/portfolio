@@ -24,6 +24,7 @@ export default function Home() {
           styles.left__content__list__itemActive
         )
       }
+
       if (
         experienceLinkRef.current.classList.contains(
           styles.left__content__list__itemActive
@@ -33,6 +34,7 @@ export default function Home() {
           styles.left__content__list__itemActive
         )
       }
+
       if (
         projectsLinkRef.current.classList.contains(
           styles.left__content__list__itemActive
@@ -108,7 +110,7 @@ export default function Home() {
             <h1>
               <b>Viktor Recour</b>
             </h1>
-            <h3>Full Stack Engineer at OTA Insight</h3>
+            <h3>Lvl II Full Stack Engineer at OTA Insight</h3>
             <p className={styles.left__content__highlight__bio}>
               This is a bio, explaining in short what I do and what I stand
               for
