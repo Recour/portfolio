@@ -173,13 +173,13 @@ export default function Home() {
       </div>
 
       <div className={styles.right} ref={contentRef}>
-        <ul className={styles.content__list}>
-          <section id='about' ref={aboutSectionRef}>
+        <ul className={styles.right__content}>
+          <section id='about' ref={aboutSectionRef} className={styles.right__content__section}>
             <h2>About ↗</h2>
             <p>{personalInfo.aboutMe}</p>
           </section>
 
-          <section id='experience' ref={experienceSectionRef}>
+          <section id='experience' ref={experienceSectionRef} className={styles.right__content__section}>
             <h2>Experience ↗</h2>
             <p>
               A collection of websites ranging from very basic to
@@ -188,7 +188,7 @@ export default function Home() {
             </p>
           </section>
 
-          <section id='projects' ref={projectsSectionRef}>
+          <section id='projects' ref={projectsSectionRef} className={styles.right__content__section}>
             <h2>Projects ↗</h2>
             <p>
               Learn how to add functionality and customize your Gatsby site

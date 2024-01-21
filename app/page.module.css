@@ -84,7 +84,10 @@
   height: 100%;
 }
 
-.right__list {
-  margin-top: var(--space-6);
+.right__content {
+  margin: var(--space-6);
+}
+
+.right__content__section {
   margin-bottom: var(--space-6);
 }
