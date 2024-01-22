@@ -92,6 +92,24 @@
   margin-bottom: var(--space-6);
 }
 
-.right__content__section__experience {
+.right__content__section__title {
+  margin-bottom: var(--space-3);
+}
+
+.right__content__section__experience:not(:first-of-type) {
   margin-top: var(--space-3);
+}
+
+.right__content__section__project:not(:first-of-type) {
+  margin-top: var(--space-3);
+}
+
+.right__content__section__project__title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.right__content__section__project__title a:not(:first-of-type) {
+  margin-left: var(--space-3);
 }

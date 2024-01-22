@@ -20,7 +20,8 @@ export default function Home() {
     profilePicture: null,
     aboutMe: '',
   });
-  const [experience, setExperience] = useState([]);
+  const [experiences, setExperiences] = useState([]);
+  const [projects, setProjects] = useState([]);
 
   const contentRef = useRef()
   const aboutLinkRef = useRef()
@@ -61,14 +62,23 @@ export default function Home() {
       .catch(console.error)
   }, []);
 
-    // Experience
-    useEffect(() => {
-      client.getEntries({content_type: 'experience'})
-        .then((entry) => {
-          setExperience(entry.items);
-        })
-        .catch(console.error)
-    }, []);
+  // Experience
+  useEffect(() => {
+    client.getEntries({content_type: 'experience'})
+      .then((entry) => {
+        setExperiences(entry.items);
+      })
+      .catch(console.error)
+  }, []);
+
+  // Projects
+  useEffect(() => {
+    client.getEntries({content_type: 'project'})
+      .then((entry) => {
+        setProjects(entry.items);
+      })
+      .catch(console.error)
+  }, []);
 
   useEffect(() => {
     const highlightLink = () => {
@@ -185,33 +195,58 @@ export default function Home() {
       <div className={styles.right} ref={contentRef}>
         <ul className={styles.right__content}>
           <section id='about' ref={aboutSectionRef} className={styles.right__content__section}>
-            <h2>About ↗</h2>
+            <h2 className={styles.right__content__section__title}>About</h2>
             <p>{personalInfo.aboutMe}</p>
           </section>
 
           <section id='experience' ref={experienceSectionRef} className={styles.right__content__section}>
-            <h2>Experience ↗</h2>
-            {experience.map((item, index) =>
-              <div key={index} className={styles.right__content__section__experience}>
-                <h3>{item.fields.title}</h3>
-                <p>
-                  <span>{item.fields.company}</span> - <span>{item.fields.location}</span>
-                </p>
-                <p>
-                  <span>{new Date(item.fields.startDate).toLocaleDateString()}</span> - <span>{item.fields.endDate ? new Date(item.fields.endDate).toLocaleDateString() : 'Present'}</span>
-                </p>
-                <p>{item.fields.description}</p>
-              </div>
+            <h2 className={styles.right__content__section__title}>Experience</h2>
+            {experiences
+              .sort((a,b) => new Date(b.fields.endDate) - new Date(a.fields.endDate))
+              .map((experience, index) =>
+                <div key={index} className={styles.right__content__section__experience}>
+                  <h3>{experience.fields.title}</h3>
+                  <p>
+                    <span>{experience.fields.company}</span> - <span>{experience.fields.location}</span>
+                  </p>
+                  <sup>
+                    <span>{new Date(experience.fields.startDate).toLocaleDateString()}</span> - <span>{experience.fields.endDate ? new Date(experience.fields.endDate).toLocaleDateString() : 'Present'}</span>
+                  </sup>
+                  <p>{experience.fields.description}</p>
+                </div>
             )}
           </section>
 
           <section id='projects' ref={projectsSectionRef} className={styles.right__content__section}>
-            <h2>Projects ↗</h2>
-            <p>
-              Learn how to add functionality and customize your Gatsby site
-              or app with thousands of plugins built by our amazing
-              developer community.
-            </p>
+            <h2 className={styles.right__content__section__title}>Projects</h2>
+            
+            {projects
+              .sort((a,b) => new Date(b.fields.date) - new Date(a.fields.date))
+              .map((project, index) =>
+                <div key={index} className={styles.right__content__section__project}>
+                  <h3 className={styles.right__content__section__project__title}>
+                    {project.fields.title}
+                  
+                    <sub>
+                      {project.fields.demoLink &&
+                        <a href={project.fields.demoLink} target='_blank'>Demo ↗</a>
+                      }
+
+                      {project.fields.repositoryLink &&
+                        <a href={project.fields.repositoryLink} target='_blank'>Repository ↗</a>
+                      }
+
+                      {project.fields.articleLink &&
+                        <a href={project.fields.articleLink} target='_blank'>Article ↗</a>
+                      }
+                    </sub>
+                  </h3>
+
+                  <sup>{new Date(project.fields.date).toLocaleDateString()}</sup>
+
+                  <p>{project.fields.description}</p>
+                </div>
+            )}
           </section>
         </ul>
       </div>
