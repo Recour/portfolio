@@ -20,6 +20,7 @@ export default function Home() {
     profilePicture: null,
     aboutMe: '',
   });
+  const [experience, setExperience] = useState([]);
 
   const contentRef = useRef()
   const aboutLinkRef = useRef()
@@ -59,6 +60,15 @@ export default function Home() {
       })
       .catch(console.error)
   }, []);
+
+    // Experience
+    useEffect(() => {
+      client.getEntries({content_type: 'experience'})
+        .then((entry) => {
+          setExperience(entry.items);
+        })
+        .catch(console.error)
+    }, []);
 
   useEffect(() => {
     const highlightLink = () => {
@@ -181,11 +191,18 @@ export default function Home() {
 
           <section id='experience' ref={experienceSectionRef} className={styles.right__content__section}>
             <h2>Experience ↗</h2>
-            <p>
-              A collection of websites ranging from very basic to
-              complex/complete that illustrate how to accomplish specific
-              tasks within your Gatsby sites.
-            </p>
+            {experience.map((item, index) =>
+              <div key={index} className={styles.right__content__section__experience}>
+                <h3>{item.fields.title}</h3>
+                <p>
+                  <span>{item.fields.company}</span> - <span>{item.fields.location}</span>
+                </p>
+                <p>
+                  <span>{new Date(item.fields.startDate).toLocaleDateString()}</span> - <span>{item.fields.endDate ? new Date(item.fields.endDate).toLocaleDateString() : 'Present'}</span>
+                </p>
+                <p>{item.fields.description}</p>
+              </div>
+            )}
           </section>
 
           <section id='projects' ref={projectsSectionRef} className={styles.right__content__section}>

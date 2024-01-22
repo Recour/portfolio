@@ -91,3 +91,7 @@
 .right__content__section {
   margin-bottom: var(--space-6);
 }
+
+.right__content__section__experience {
+  margin-top: var(--space-3);
+}
