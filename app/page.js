@@ -3,6 +3,8 @@
 import styles from './page.module.css'
 import { useEffect, useRef, useState } from 'react'
 import ContentfulImage from './components/ContenfulImage';
+import TechnologyTag from './components/TechnologyTag';
+import Project from './components/Project';
 
 const contentful = require('contentful')
 
@@ -20,44 +22,34 @@ export default function Home() {
     profilePicture: null,
     aboutMe: '',
   });
+  const [educations, setEducations] = useState([]);
   const [experiences, setExperiences] = useState([]);
   const [projects, setProjects] = useState([]);
 
   const contentRef = useRef()
   const aboutLinkRef = useRef()
   const aboutSectionRef = useRef()
+  const educationLinkRef = useRef()
+  const educationSectionRef = useRef()
   const experienceLinkRef = useRef()
   const experienceSectionRef = useRef()
   const projectsLinkRef = useRef()
   const projectsSectionRef = useRef()
-
-  const links = [{
-    text: 'About',
-    url: 'about',
-    description: personalInfo.aboutMe,
-    linkRef: aboutLinkRef,
-    ref: aboutSectionRef,
-  }, {
-    text: 'Experience',
-    url: 'experience',
-    description:
-      'A collection of websites ranging from very basic to complex/complete that illustrate how to accomplish specific tasks within your Gatsby sites.',
-    linkRef: experienceLinkRef,
-    ref: experienceSectionRef,
-  }, {
-    text: 'Projects',
-    url: 'projects',
-    description:
-      'Learn how to add functionality and customize your Gatsby site or app with thousands of plugins built by our amazing developer community.',
-    linkRef: projectsLinkRef,
-    ref: projectsSectionRef,
-  }]
 
   // Personal info
   useEffect(() => {
     client.getEntry('4QvSOM4V73JdVEoDAjAlY7')
       .then((entry) => {
         setPersonalInfo(entry.fields);
+      })
+      .catch(console.error)
+  }, []);
+
+  // Education
+  useEffect(() => {
+    client.getEntries({content_type: 'education'})
+      .then((entry) => {
+        setEducations(entry.items);
       })
       .catch(console.error)
   }, []);
@@ -92,6 +84,15 @@ export default function Home() {
         )
       }
 
+      if (educationLinkRef.current.classList.contains(
+        styles.left__content__list__itemActive
+        )
+      ) {
+        educationLinkRef.current.classList.remove(
+          styles.left__content__list__itemActive
+        )
+      }
+
       if (
         experienceLinkRef.current.classList.contains(
           styles.left__content__list__itemActive
@@ -122,6 +123,12 @@ export default function Home() {
         contentRef.current.scrollTop >= experienceSectionRef.current.offsetTop
       ) {
         experienceLinkRef.current.classList.add(
+          styles.left__content__list__itemActive
+        )
+      } else if (
+        contentRef.current.scrollTop >= educationSectionRef.current.offsetTop
+      ) {
+        educationLinkRef.current.classList.add(
           styles.left__content__list__itemActive
         )
       } else {
@@ -170,6 +177,13 @@ export default function Home() {
             </li>
 
             <li
+            className={styles.left__content__list__item}
+            ref={educationLinkRef}
+          >
+            <a href='#education'>Education</a>
+          </li>
+
+            <li
               className={styles.left__content__list__item}
               ref={experienceLinkRef}
             >
@@ -199,6 +213,23 @@ export default function Home() {
             <p>{personalInfo.aboutMe}</p>
           </section>
 
+          <section id='education' ref={educationSectionRef} className={styles.right__content__section}>
+          <h2 className={styles.right__content__section__title}>Education</h2>
+          {educations
+            .sort((a,b) => new Date(b.fields.graduationDate) - new Date(a.fields.graduationDate))
+            .map((education, index) =>
+              <div key={index} className={styles.right__content__section__experience}>
+                <h3>{education.fields.degree}</h3>
+                <p>
+                  <span>{education.fields.institution}</span> - <span>{education.fields.location}</span>
+                </p>
+                <sup>
+                  {new Date(education.fields.graduationDate).toLocaleDateString()}
+                </sup>
+              </div>
+          )}
+        </section>
+
           <section id='experience' ref={experienceSectionRef} className={styles.right__content__section}>
             <h2 className={styles.right__content__section__title}>Experience</h2>
             {experiences
@@ -213,6 +244,14 @@ export default function Home() {
                     <span>{new Date(experience.fields.startDate).toLocaleDateString()}</span> - <span>{experience.fields.endDate ? new Date(experience.fields.endDate).toLocaleDateString() : 'Present'}</span>
                   </sup>
                   <p>{experience.fields.description}</p>
+
+                  <div className={styles.technology_tag_container}>
+                    {experience.fields.technologies &&
+                      experience.fields.technologies.map((technology, index) =>
+                        <TechnologyTag key={index} technology={technology} />
+                      )
+                    }
+                  </div>
                 </div>
             )}
           </section>
@@ -223,29 +262,7 @@ export default function Home() {
             {projects
               .sort((a,b) => new Date(b.fields.date) - new Date(a.fields.date))
               .map((project, index) =>
-                <div key={index} className={styles.right__content__section__project}>
-                  <h3 className={styles.right__content__section__project__title}>
-                    {project.fields.title}
-                  
-                    <sub>
-                      {project.fields.demoLink &&
-                        <a href={project.fields.demoLink} target='_blank'>Demo ↗</a>
-                      }
-
-                      {project.fields.repositoryLink &&
-                        <a href={project.fields.repositoryLink} target='_blank'>Repository ↗</a>
-                      }
-
-                      {project.fields.articleLink &&
-                        <a href={project.fields.articleLink} target='_blank'>Article ↗</a>
-                      }
-                    </sub>
-                  </h3>
-
-                  <sup>{new Date(project.fields.date).toLocaleDateString()}</sup>
-
-                  <p>{project.fields.description}</p>
-                </div>
+                <Project key={index} project={project} />
             )}
           </section>
         </ul>

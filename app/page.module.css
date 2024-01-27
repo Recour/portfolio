@@ -113,3 +113,19 @@
 .right__content__section__project__title a:not(:first-of-type) {
   margin-left: var(--space-3);
 }
+
+.technology_tag_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: var(--space-1);
+}
+
+.technology_tag {
+  border: 1px solid var(--color-text--neutral);
+  border-radius: 12px;
+  padding: var(--space-1) var(--space-2);
+  margin-right: var(--space-1);
+  margin-top: var(--space-1);
+  font-size: var(--font-sx);
+}
