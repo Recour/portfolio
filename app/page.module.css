@@ -5,6 +5,24 @@
   background: rgb(0, 28, 48);
 }
 
+.main:hover::after {
+  opacity: 0.1;
+}
+
+.main::after {
+  --side: 400px;
+
+  content: "";
+  position: absolute;
+  width: var(--side);
+  height: var(--side);
+  top: calc(var(--y, 0) * 1px - (var(--side) / 2));
+  left: calc(var(--x, 0) * 1px - (var(--side) / 2));
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: radial-gradient(white, #3984ff00 80%);
+}
+
 .left {
   flex: 1;
   overflow: hidden;
@@ -100,17 +118,17 @@
   margin-top: var(--space-3);
 }
 
-.right__content__section__project:not(:first-of-type) {
+.project:not(:first-of-type) {
   margin-top: var(--space-3);
 }
 
-.right__content__section__project__title {
+.project__title {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.right__content__section__project__title a:not(:first-of-type) {
+.project__title a:not(:first-of-type) {
   margin-left: var(--space-3);
 }
 

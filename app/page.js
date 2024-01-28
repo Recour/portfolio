@@ -26,7 +26,8 @@ export default function Home() {
   const [experiences, setExperiences] = useState([]);
   const [projects, setProjects] = useState([]);
 
-  const contentRef = useRef()
+  const backgroundRef = useRef()
+  const rightContentRef = useRef()
   const aboutLinkRef = useRef()
   const aboutSectionRef = useRef()
   const educationLinkRef = useRef()
@@ -72,6 +73,7 @@ export default function Home() {
       .catch(console.error)
   }, []);
 
+  // Highlight links on scroll
   useEffect(() => {
     const highlightLink = () => {
       if (
@@ -114,19 +116,19 @@ export default function Home() {
       }
 
       if (
-        contentRef.current.scrollTop >= projectsSectionRef.current.offsetTop
+        rightContentRef.current.scrollTop >= projectsSectionRef.current.offsetTop
       ) {
         projectsLinkRef.current.classList.add(
           styles.left__content__list__itemActive
         )
       } else if (
-        contentRef.current.scrollTop >= experienceSectionRef.current.offsetTop
+        rightContentRef.current.scrollTop >= experienceSectionRef.current.offsetTop
       ) {
         experienceLinkRef.current.classList.add(
           styles.left__content__list__itemActive
         )
       } else if (
-        contentRef.current.scrollTop >= educationSectionRef.current.offsetTop
+        rightContentRef.current.scrollTop >= educationSectionRef.current.offsetTop
       ) {
         educationLinkRef.current.classList.add(
           styles.left__content__list__itemActive
@@ -141,7 +143,7 @@ export default function Home() {
     const handleScroll = e => {
       highlightLink()
     }
-    const contentRefCurrent = contentRef.current
+    const contentRefCurrent = rightContentRef.current
     contentRefCurrent.addEventListener('scroll', handleScroll)
 
     highlightLink()
@@ -150,8 +152,24 @@ export default function Home() {
     }
   }, [])
 
+  // Gradient that follows mouse movements
+  const mouseMoveEvent = (e) => {
+    backgroundRef.current.style.setProperty("--x", e.clientX)
+    backgroundRef.current.style.setProperty("--y", e.clientY)
+  }
+  useEffect(() => {
+    const backgroundRefCurrent = backgroundRef.current
+    if (backgroundRefCurrent) {
+      backgroundRefCurrent.addEventListener("mousemove", mouseMoveEvent)
+    }
+
+    return () => {
+      backgroundRefCurrent.removeEventListener("mousemove", () => {})
+    }
+  }, [backgroundRef])
+
   return (
-    <main className={styles.main}>
+    <main ref={backgroundRef} className={styles.main}>
       <div className={styles.left}>
         <div className={styles.left__content}>
           <div className={styles.left__content__highlight}>
@@ -206,7 +224,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className={styles.right} ref={contentRef}>
+      <div className={styles.right} ref={rightContentRef}>
         <ul className={styles.right__content}>
           <section id='about' ref={aboutSectionRef} className={styles.right__content__section}>
             <h2 className={styles.right__content__section__title}>About</h2>

@@ -3,8 +3,8 @@ import styles from '../page.module.css'
 
 const Project = ({ project }) => {
   return (
-    <div className={styles.right__content__section__project}>
-      <h3 className={styles.right__content__section__project__title}>
+    <div className={styles.project}>
+      <h3 className={styles.project__title}>
         {project.fields.title}
       
         <sub>
