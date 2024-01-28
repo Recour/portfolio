@@ -1,5 +1,4 @@
 import TechnologyTag from "./TechnologyTag"
-import styles from '../page.module.css'
 import ContentfulImage from "./ContenfulImage"
 
 const Project = ({ project }) => {
