@@ -1,32 +1,37 @@
 import TechnologyTag from "./TechnologyTag"
 import styles from '../page.module.css'
+import ContentfulImage from "./ContenfulImage"
 
 const Project = ({ project }) => {
   return (
-    <div className={styles.project}>
-      <h3 className={styles.project__title}>
-        {project.fields.title}
-      
-        <sub>
-          {project.fields.demoLink &&
-            <a href={project.fields.demoLink} target='_blank'>Demo ↗</a>
-          }
+    <div>
+      <div className='text-lg text-slate-200'>{project.fields.title}</div>
+    
+      <div className='flex text-xs gap-3 text-slate-400'>
+        {project.fields.demoLink &&
+          <a href={project.fields.demoLink} target='_blank' className='hover:text-slate-300'>Demo ↗</a>
+        }
 
-          {project.fields.repositoryLink &&
-            <a href={project.fields.repositoryLink} target='_blank'>Repository ↗</a>
-          }
+        {project.fields.repositoryLink &&
+          <a href={project.fields.repositoryLink} target='_blank' className='hover:text-slate-300'>Repository ↗</a>
+        }
 
-          {project.fields.articleLink &&
-            <a href={project.fields.articleLink} target='_blank'>Article ↗</a>
-          }
-        </sub>
-      </h3>
+        {project.fields.articleLink &&
+          <a href={project.fields.articleLink} target='_blank' className='hover:text-slate-300'>Article ↗</a>
+        }
+      </div>
 
-      <sup>{new Date(project.fields.date).toLocaleDateString()}</sup>
+      <div className='text-sm text-slate-400 my-4'>{project.fields.description}</div>
 
-      <p>{project.fields.description}</p>
+      {project.fields.images &&
+        <div className='flex gap-1 my-4'>
+          {project.fields.images.map((image, index) =>
+            <ContentfulImage key={index} image={image} width={100} height={100} />
+          )}
+        </div>
+      }
 
-      <div className={styles.technology_tag_container}>
+      <div className="flex flex-wrap gap-1 my-4">
         {project.fields.technologies &&
           project.fields.technologies.map((technology, index) =>
             <TechnologyTag key={index} technology={technology} />
