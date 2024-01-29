@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 import ContentfulImage from './components/ContenfulImage';
 import TechnologyTag from './components/TechnologyTag';
 import Project from './components/Project';
+import Image from 'next/image';
+import githubLogo from '../public/github-mark.svg';
+import threadsLogo from '../public/threads-logo.svg';
 
 const contentful = require('contentful')
 
@@ -171,49 +174,53 @@ export default function Home() {
   }, [spotlightRef])
 
   return (
-    <div className="mx-auto px-6 py-12 bg-slate-900 lg:flex lg:px-36 lg:py-24">
+    <div className="mx-auto px-6 bg-slate-900 lg:flex lg:px-36 lg:gap-3">
       <div ref={spotlightRef}></div>
-      <header className='lg:w-1/3'>
+      <header className='lg:w-1/2 lg:sticky lg:top-0 lg:max-h-screen py-12 lg:py-24 lg:flex lg:flex-col lg:justify-between text-slate-400'>
         <div className='flex flex-col gap-3'>
           <div className='text-4xl text-slate-100 font-bold'>{personalInfo.name}</div>
           <div className='text-xl text-slate-200 font-medium'>{personalInfo.title}</div>
-          <div className='text-md text-slate-400'>{personalInfo.bio}</div>
+          <div className='text-md'>{personalInfo.bio}</div>
         </div>
 
-        <nav className='hidden lg:block'>
+        <nav className='hidden lg:block text-sm uppercase list-none'>
           <li ref={aboutLinkRef}>
-            <a href='#about'>About</a>
+            <a href='#about' className='hover:text-slate-200'>About</a>
           </li>
 
           <li ref={educationLinkRef}>
-            <a href='#education'>Education</a>
+            <a href='#education' className='hover:text-slate-200'>Education</a>
           </li>
 
           <li ref={experienceLinkRef}>
-            <a href='#experience'>Experience</a>
+            <a href='#experience' className='hover:text-slate-200'>Experience</a>
           </li>
 
           <li ref={projectsLinkRef}>
-            <a href='#projects'>Projects</a>
+            <a href='#projects' className='hover:text-slate-200'>Projects</a>
           </li>
         </nav>
 
-        <div>
-          <svg>
-            <path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z'></path>
-          </svg>
+        <div className='flex flex-row gap-3 mt-12'>
+          <a href='https://github.com/Recour' target='_blank'>
+            <Image src={githubLogo} alt='Github' width={30} height={30} className='invert' />
+          </a>
+
+          <a href='https://www.threads.net/@viktorrecour' target='_blank'>
+            <Image src={threadsLogo} alt='Threads' width={30} height={30} className='invert' />
+          </a>
         </div>
       </header>
 
-      <main ref={rightContentRef} className='lg:w-2/3'>
+      <main ref={rightContentRef} className='lg:w-1/2 lg:py-24'>
         <ul className='*:mb-12'>
           <section id='about' ref={aboutSectionRef}>
-            <div className='my-3 text-xl uppercase text-slate-200 font-bold'>About</div>
+            <div className='mb-3 text-xl uppercase text-slate-200 font-bold'>About</div>
             <div className='text-sm text-slate-400'>{personalInfo.aboutMe}</div>
           </section>
 
           <section id='education' ref={educationSectionRef}>
-            <div className='my-3 text-xl uppercase text-slate-200 font-bold'>Education</div>
+            <div className='mb-3 text-xl uppercase text-slate-200 font-bold'>Education</div>
             <div>
               {educations
                 .sort((a,b) => new Date(b.fields.graduationDate) - new Date(a.fields.graduationDate))
@@ -225,7 +232,9 @@ export default function Home() {
                     <div className='text-lg text-slate-200'>{education.fields.degree}</div>
                     <div className='text-xs text-slate-400'>
                       {education.fields.institutionLink ?
-                        <a href={education.fields.institutionLink} target='_blank'>{education.fields.institution} · {education.fields.location} ↗</a>
+                        <a href={education.fields.institutionLink} target='_blank' className='hover:text-slate-300'>
+                          {education.fields.institution} · {education.fields.location} ↗
+                        </a>
                         :
                         <span>{education.fields.institution} · {education.fields.location}</span>
                       }
@@ -236,7 +245,7 @@ export default function Home() {
           </section>
 
           <section id='experience' ref={experienceSectionRef}>
-            <div className='my-3 text-xl uppercase text-slate-200 font-bold'>Experience</div>
+            <div className='mb-3 text-xl uppercase text-slate-200 font-bold'>Experience</div>
             <div>
               {experiences
                 .sort((a,b) => new Date(b.fields.startDate) - new Date(a.fields.startDate))
@@ -268,7 +277,7 @@ export default function Home() {
           </section>
 
           <section id='projects' ref={projectsSectionRef}>
-            <div className='my-3 text-xl uppercase text-slate-200 font-bold'>Projects</div>
+            <div className='mb-3 text-xl uppercase text-slate-200 font-bold'>Projects</div>
             
             <div>
               {projects
