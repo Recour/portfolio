@@ -1,23 +1,30 @@
 import TechnologyTag from "./TechnologyTag"
 import ContentfulImage from "./ContenfulImage"
+import { useRef, useEffect } from "react"
 
 const Project = ({ project }) => {
+  const { demoLink, repositoryLink, articleLink } = project.fields
+
+  const projectRef = useRef()
+
+  const linkToOpen = demoLink || repositoryLink || articleLink
+
+  useEffect(() => {
+    const projectRefCurrent = projectRef.current
+
+    const handleClick = () => {
+      window.open(linkToOpen, '_blank')
+    }
+
+    projectRefCurrent.addEventListener('click', handleClick)
+    return () => projectRefCurrent.removeEventListener('click', handleClick)
+  }, [linkToOpen])
+
   return (
-    <div>
-      <div className='text-lg text-slate-200'>{project.fields.title}</div>
-    
-      <div className='flex text-xs gap-3 text-slate-400'>
-        {project.fields.demoLink &&
-          <a href={project.fields.demoLink} target='_blank' className='hover:text-slate-300'>Demo ↗</a>
-        }
-
-        {project.fields.repositoryLink &&
-          <a href={project.fields.repositoryLink} target='_blank' className='hover:text-slate-300'>Repository ↗</a>
-        }
-
-        {project.fields.articleLink &&
-          <a href={project.fields.articleLink} target='_blank' className='hover:text-slate-300'>Article ↗</a>
-        }
+    <div ref={projectRef} className='rounded-xl p-3 hover:bg-cyan-900/10 hover:transition cursor-pointer'>
+      <div className='flex gap-2 items-center'>
+        <div className='text-lg text-slate-200'>{project.fields.title}</div>
+        <span className='text-xs'>↗</span>
       </div>
 
       <div className='text-sm text-slate-400 my-4'>{project.fields.description}</div>
@@ -30,7 +37,7 @@ const Project = ({ project }) => {
         </div>
       }
 
-      <div className="flex flex-wrap gap-1 my-4">
+      <div className="flex flex-wrap gap-1 mt-4">
         {project.fields.technologies &&
           project.fields.technologies.map((technology, index) =>
             <TechnologyTag key={index} technology={technology} />

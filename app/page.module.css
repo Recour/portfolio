@@ -1,0 +1,26 @@
+.nav_item {
+  display: flex;
+  align-items: center;
+}
+
+.nav_item::before {
+  content: "";
+  display: inline-block;
+  width: 30px; /* Adjust the width as needed */
+  height: 1px; /* Adjust the height as needed */
+  background-color: rgb(148 163 184);
+  margin-right: var(
+    --space-3
+  ); /* Adjust the spacing between the line and the text */
+  transition: width 0.25s ease; /* Add the transition property */
+}
+
+.nav_itemActive {
+  color: rgb(226 232 240);
+  font-weight: bold;
+}
+
+.nav_itemActive::before {
+  background-color: rgb(226 232 240);
+  width: 60px;
+}
