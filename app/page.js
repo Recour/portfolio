@@ -5,9 +5,11 @@ import ContentfulImage from './components/ContenfulImage';
 import TechnologyTag from './components/TechnologyTag';
 import Project from './components/Project';
 import Image from 'next/image';
-import githubLogo from '../public/github-mark.svg';
+import githubLogo from '../public/github-logo.svg';
 import threadsLogo from '../public/threads-logo.svg';
+import linkedinLogo from '../public/linkedin-logo.svg';
 import styles from './page.module.css';
+import Card from './components/Card';
 
 const contentful = require('contentful')
 
@@ -39,6 +41,18 @@ export default function Home() {
   const experienceSectionRef = useRef()
   const projectsLinkRef = useRef()
   const projectsSectionRef = useRef()
+
+  const localeStringOptions = {
+    year: 'numeric',
+    month: 'long'
+  }
+
+  function areDatesSameMonth(date1, date2) {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth()
+    );
+  }
 
   // Personal info
   useEffect(() => {
@@ -181,29 +195,33 @@ export default function Home() {
           <div className='text-4xl text-slate-100 font-bold'>{personalInfo.name}</div>
           <div className='text-xl text-slate-200 font-medium'>{personalInfo.title}</div>
           <div className='text-md'>{personalInfo.bio}</div>
+
+          <nav className='hidden mt-24 lg:flex flex-col gap-3 text-xs uppercase list-none tracking-widest'>
+            <li className={styles.nav_item} ref={aboutLinkRef}>
+              <a href='#about' className='hover:text-slate-200'>About</a>
+            </li>
+
+            <li className={styles.nav_item} ref={educationLinkRef}>
+              <a href='#education' className='hover:text-slate-200'>Education</a>
+            </li>
+
+            <li className={styles.nav_item} ref={experienceLinkRef}>
+              <a href='#experience' className='hover:text-slate-200'>Experience</a>
+            </li>
+
+            <li className={styles.nav_item} ref={projectsLinkRef}>
+              <a href='#projects' className='hover:text-slate-200'>Projects</a>
+            </li>
+          </nav>
         </div>
-
-        <nav className='hidden lg:block text-sm uppercase list-none'>
-          <li className={styles.nav_item} ref={aboutLinkRef}>
-            <a href='#about' className='hover:text-slate-200'>About</a>
-          </li>
-
-          <li className={styles.nav_item} ref={educationLinkRef}>
-            <a href='#education' className='hover:text-slate-200'>Education</a>
-          </li>
-
-          <li className={styles.nav_item} ref={experienceLinkRef}>
-            <a href='#experience' className='hover:text-slate-200'>Experience</a>
-          </li>
-
-          <li className={styles.nav_item} ref={projectsLinkRef}>
-            <a href='#projects' className='hover:text-slate-200'>Projects</a>
-          </li>
-        </nav>
 
         <div className='flex flex-row gap-3 mt-12'>
           <a href='https://github.com/Recour' target='_blank'>
             <Image src={githubLogo} alt='Github' width={30} height={30} className='invert' />
+          </a>
+
+          <a href='https://www.linkedin.com/in/viktor-recour-784267167/' target='_blank'>
+            <Image src={linkedinLogo} alt='LinkedIn' width={30} height={30} className='invert' />
           </a>
 
           <a href='https://www.threads.net/@viktorrecour' target='_blank'>
@@ -213,83 +231,84 @@ export default function Home() {
       </header>
 
       <main className='lg:w-1/2 lg:py-24'>
-        <ul className='*:mb-24'>
-          <section id='about' ref={aboutSectionRef}>
-            <div className='mb-6 text-sm uppercase text-slate-200 font-medium'>About</div>
-            <div className='text-sm text-slate-400'>{personalInfo.aboutMe}</div>
-          </section>
+        <section id='about' ref={aboutSectionRef} className='text-sm text-slate-400'>
+          {personalInfo.aboutMe}
+        </section>
 
-          <section id='education' ref={educationSectionRef}>
-            <div className='mb-6 text-sm uppercase text-slate-200 font-medium'>Education</div>
-            <div>
-              {educations
-                .sort((a,b) => new Date(b.fields.graduationDate) - new Date(a.fields.graduationDate))
-                .map((education, index) =>
-                  <div key={index} className='my-12 first:mt-0'>
-                    <div className='text-xs  text-slate-400 uppercase font-semibold my-2'>
-                      {new Date(education.fields.graduationDate).toLocaleDateString()}
+        <section id='education' ref={educationSectionRef} className='mt-24'>
+          {educations
+            .sort((a,b) => new Date(b.fields.graduationDate) - new Date(a.fields.graduationDate))
+            .map((education, index) =>
+              <div key={index} className='my-12 first:mt-0'>
+                <Card link={education.fields.institutionLink}>
+                  <div className='flex'>
+                    <div className='w-1/3'>
+                      <div className='text-xs  text-slate-400 uppercase font-medium'>
+                        {new Date(education.fields.graduationDate).toLocaleString('en-US', localeStringOptions)}
+                      </div>
                     </div>
-                    <div className='text-lg text-slate-200'>{education.fields.degree}</div>
-                    <div className='text-xs text-slate-400'>
-                      {education.fields.institutionLink ?
-                        <a href={education.fields.institutionLink} target='_blank' className='hover:text-slate-300'>
-                          {education.fields.institution} · {education.fields.location} ↗
-                        </a>
-                        :
-                        <span>{education.fields.institution} · {education.fields.location}</span>
-                      }
+
+                    <div className='w-2/3 ml-9'>
+                      <div className='text-lg text-slate-200 leading-5 group-hover:text-cyan-200 group-hover:transition'>{education.fields.degree}</div>
+                      <div className='text-xs text-slate-400 mt-1'>
+                        {education.fields.institution} · {education.fields.location}
+                      </div>
                     </div>
                   </div>
-              )}
-            </div>
-          </section>
+                </Card>
+              </div>
+          )}
+        </section>
 
-          <section id='experience' ref={experienceSectionRef}>
-            <div className='mb-6 text-sm uppercase text-slate-200 font-medium'>Experience</div>
-            <div>
-              {experiences
-                .sort((a,b) => new Date(b.fields.startDate) - new Date(a.fields.startDate))
-                .map((experience, index) =>
-                  <div key={index} className='my-12 first:mt-0'>
-                    <div className='text-xs  text-slate-400 uppercase font-medium my-2'>
-                      <span>{new Date(experience.fields.startDate).toLocaleDateString()}</span> - <span>{experience.fields.endDate ? new Date(experience.fields.endDate).toLocaleDateString() : 'Present'}</span>
+        <section id='experience' ref={experienceSectionRef} className='mt-24'>
+            {experiences
+              .sort((a,b) => new Date(b.fields.startDate) - new Date(a.fields.startDate))
+              .map((experience, index) =>
+                <div key={index} className='my-12 first:mt-0'>
+                  <Card link={experience.fields.companyLink}>
+                    <div className='flex'>
+                      <div className='w-1/3'>
+                        <div className='text-xs  text-slate-400 uppercase font-medium'>
+                          <span>{new Date(experience.fields.startDate).toLocaleString('en-US', localeStringOptions)}</span>
+                          {!areDatesSameMonth(new Date(experience.fields.startDate), new Date(experience.fields.endDate)) &&
+                            <span>
+                              <span> - </span>
+                              <span>{experience.fields.endDate ? new Date(experience.fields.endDate).toLocaleString('en-US', localeStringOptions) : 'Present'}</span>
+                            </span>
+                          }
+                        </div>
+                      </div>
+
+                      <div className='w-2/3 ml-9'>
+                        <div className='text-lg text-slate-200 leading-5 group-hover:text-cyan-200 group-hover:transition'>{experience.fields.title}</div>
+                        <div className='text-xs text-slate-400 mt-1'>
+                          {experience.fields.company} · {experience.fields.location}
+                        </div>
+                        <div className='text-sm text-slate-400 my-4'>{experience.fields.description}</div>
+
+                        <ul className="flex flex-wrap gap-1">
+                          {experience.fields.technologies &&
+                            experience.fields.technologies.map((technology, index) =>
+                              <TechnologyTag key={index} technology={technology} />
+                            )
+                          }
+                        </ul>
+                      </div>
                     </div>
-                    <div className='text-lg text-slate-200'>{experience.fields.title}</div>
-                    <div className='text-xs text-slate-400'>
-                      {experience.fields.companyLink ?
-                        <a href={experience.fields.companyLink} className='hover:text-slate-300' target='_blank'>{experience.fields.company} · {experience.fields.location} ↗</a>
-                        :
-                        <span>{experience.fields.company} · {experience.fields.location}</span>
-                      }
-                    </div>
-                    <div className='text-sm text-slate-400 my-4'>{experience.fields.description}</div>
+                  </Card>
+                </div>
+            )}
+        </section>
 
-                    <ul className="flex flex-wrap gap-1">
-                      {experience.fields.technologies &&
-                        experience.fields.technologies.map((technology, index) =>
-                          <TechnologyTag key={index} technology={technology} />
-                        )
-                      }
-                    </ul>
-                  </div>
-              )}
-            </div>
-          </section>
-
-          <section id='projects' ref={projectsSectionRef}>
-            <div className='mb-6 text-sm uppercase text-slate-200 font-medium'>Projects</div>
-            
-            <div>
-              {projects
-                .sort((a,b) => new Date(b.fields.date) - new Date(a.fields.date))
-                .map((project, index) =>
-                  <div key={index} className='my-6 first:mt-0'>
-                    <Project project={project} />
-                  </div>
-              )}
-            </div>
-          </section>
-        </ul>
+        <section id='projects' ref={projectsSectionRef} className='mt-24'>
+          {projects
+            .sort((a,b) => new Date(b.fields.date) - new Date(a.fields.date))
+            .map((project, index) =>
+              <div key={index} className='my-6 first:mt-0 last:mb-0'>
+                <Project project={project} />
+              </div>
+          )}
+        </section>
       </main>
     </div>
   )
