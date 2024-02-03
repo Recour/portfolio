@@ -10,6 +10,7 @@ import threadsLogo from '../public/threads-logo.svg';
 import linkedinLogo from '../public/linkedin-logo.svg';
 import styles from './page.module.css';
 import Card from './components/Card';
+import About from './components/About';
 
 const contentful = require('contentful')
 
@@ -44,7 +45,7 @@ export default function Home() {
 
   const localeStringOptions = {
     year: 'numeric',
-    month: 'long'
+    month: 'short'
   }
 
   function areDatesSameMonth(date1, date2) {
@@ -188,7 +189,7 @@ export default function Home() {
   }, [spotlightRef])
 
   return (
-    <div ref={scrollRef} className="mx-auto px-6 bg-slate-900 lg:flex lg:px-36 lg:gap-3">
+    <div ref={scrollRef} className="px-6 bg-slate-900 lg:flex md:px-12 lg:px-48 lg:gap-3">
       <div ref={spotlightRef}></div>
       <header className='lg:w-1/2 lg:sticky lg:top-0 lg:max-h-screen py-12 lg:py-24 lg:flex lg:flex-col lg:justify-between text-slate-400'>
         <div className='flex flex-col gap-3'>
@@ -196,7 +197,7 @@ export default function Home() {
           <div className='text-xl text-slate-200 font-medium'>{personalInfo.title}</div>
           <div className='text-md'>{personalInfo.bio}</div>
 
-          <nav className='hidden mt-24 lg:flex flex-col gap-3 text-xs uppercase list-none tracking-widest'>
+          <nav className='hidden mt-24 lg:flex flex-col gap-6 text-xs uppercase font-bold list-none tracking-widest'>
             <li className={styles.nav_item} ref={aboutLinkRef}>
               <a href='#about' className='hover:text-slate-200'>About</a>
             </li>
@@ -230,16 +231,16 @@ export default function Home() {
         </div>
       </header>
 
-      <main className='lg:w-1/2 lg:py-24'>
-        <section id='about' ref={aboutSectionRef} className='text-sm text-slate-400'>
-          {personalInfo.aboutMe}
+      <main className='lg:w-1/2 pb-24 lg:py-24'>
+        <section id='about' ref={aboutSectionRef} className='text-sm text-slate-400 flex flex-col gap-6'>
+          <About aboutDocument={personalInfo.about} />
         </section>
 
         <section id='education' ref={educationSectionRef} className='mt-24'>
           {educations
             .sort((a,b) => new Date(b.fields.graduationDate) - new Date(a.fields.graduationDate))
             .map((education, index) =>
-              <div key={index} className='my-12 first:mt-0'>
+              <div key={index} className='my-6 first:mt-0'>
                 <Card link={education.fields.institutionLink}>
                   <div className='flex'>
                     <div className='w-1/3'>
@@ -249,7 +250,7 @@ export default function Home() {
                     </div>
 
                     <div className='w-2/3 ml-9'>
-                      <div className='text-lg text-slate-200 leading-5 group-hover:text-cyan-200 group-hover:transition'>{education.fields.degree}</div>
+                      <div className='text-lg text-slate-200 leading-5 group-hover:text-cyan-200 transition-all'>{education.fields.degree}</div>
                       <div className='text-xs text-slate-400 mt-1'>
                         {education.fields.institution} · {education.fields.location}
                       </div>
@@ -260,11 +261,11 @@ export default function Home() {
           )}
         </section>
 
-        <section id='experience' ref={experienceSectionRef} className='mt-24'>
+        <section id='experience' ref={experienceSectionRef} className='mt-24 group/list'>
             {experiences
               .sort((a,b) => new Date(b.fields.startDate) - new Date(a.fields.startDate))
               .map((experience, index) =>
-                <div key={index} className='my-12 first:mt-0'>
+                <div key={index} className='my-6 first:mt-0 hover:!opacity-100 group-hover/list:opacity-50 transition-all'>
                   <Card link={experience.fields.companyLink}>
                     <div className='flex'>
                       <div className='w-1/3'>
@@ -280,7 +281,7 @@ export default function Home() {
                       </div>
 
                       <div className='w-2/3 ml-9'>
-                        <div className='text-lg text-slate-200 leading-5 group-hover:text-cyan-200 group-hover:transition'>{experience.fields.title}</div>
+                        <div className='text-lg text-slate-200 leading-5 group-hover:text-cyan-200 transition-all'>{experience.fields.title}</div>
                         <div className='text-xs text-slate-400 mt-1'>
                           {experience.fields.company} · {experience.fields.location}
                         </div>
@@ -300,11 +301,11 @@ export default function Home() {
             )}
         </section>
 
-        <section id='projects' ref={projectsSectionRef} className='mt-24'>
+        <section id='projects' ref={projectsSectionRef} className='mt-24 group/list'>
           {projects
             .sort((a,b) => new Date(b.fields.date) - new Date(a.fields.date))
             .map((project, index) =>
-              <div key={index} className='my-6 first:mt-0 last:mb-0'>
+              <div key={index} className='my-6 first:mt-0 last:mb-0 hover:!opacity-100 group-hover/list:opacity-50 transition-all'>
                 <Project project={project} />
               </div>
           )}

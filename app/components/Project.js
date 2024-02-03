@@ -18,7 +18,7 @@ const Project = ({ project }) => {
         </div>
 
         <div className='w-2/3 ml-9'>
-          <div className='text-lg text-slate-200 group-hover:text-cyan-200 group-hover:transition'>{project.fields.title}</div>
+          <div className='text-lg text-slate-200 group-hover:text-cyan-200 transition-all'>{project.fields.title}</div>
 
           <div className='text-sm text-slate-400 my-4'>{project.fields.description}</div>
 

@@ -6,13 +6,13 @@
 .nav_item::before {
   content: "";
   display: inline-block;
-  width: 30px; /* Adjust the width as needed */
-  height: 1px; /* Adjust the height as needed */
+  width: 30px;
+  height: 1px;
   background-color: rgb(148 163 184);
   margin-right: var(
     --space-3
-  ); /* Adjust the spacing between the line and the text */
-  transition: width 0.25s ease; /* Add the transition property */
+  );
+  transition: width 0.25s ease;
 }
 
 .nav_itemActive {
