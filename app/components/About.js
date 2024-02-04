@@ -7,6 +7,7 @@ const options = {
       <a
         href={data.uri}
         target='_blank'
+        rel='noreferrer noopener'
         className='text-slate-200 font-medium hover:text-cyan-200 transition-all'
       >
         {children}

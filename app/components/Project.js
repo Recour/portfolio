@@ -12,7 +12,7 @@ const Project = ({ project }) => {
   const hasMultipleLinks = links && links.length > 1
 
   const LinkElement = ({ link, text }) => (
-    <a href={link} target='_blank' className='text-slate-200 font-medium hover:text-cyan-200 transition-all' onClick={(e) => e.stopPropagation()}>
+    <a href={link} target='_blank' rel='noreferrer noopener' className='text-slate-200 font-medium hover:text-cyan-200 transition-all' onClick={(e) => e.stopPropagation()}>
       <span className='flex items-center gap-2 text-xs'>
         <Image src={linkIcon} alt='Link' width={10} height={10} className='invert' />
         {text}

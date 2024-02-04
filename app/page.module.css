@@ -9,9 +9,7 @@
   width: 30px;
   height: 1px;
   background-color: rgb(148 163 184);
-  margin-right: var(
-    --space-3
-  );
+  margin-right: 12px;
   transition: width 0.25s ease;
 }
 
