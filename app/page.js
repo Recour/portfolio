@@ -182,16 +182,6 @@ export default function Home() {
     setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
-  const handleFocus = () => {
-    setIsFocused(true);
-    setOpacity(1);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-    setOpacity(0);
-  };
-
   const handleMouseEnter = () => {
     setOpacity(1);
   };
@@ -205,8 +195,6 @@ export default function Home() {
       ref={scrollRef}
       className="px-6 lg:flex md:px-12 lg:px-48 lg:gap-3 relative"
       onMouseMove={handleMouseMove}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -214,7 +202,7 @@ export default function Home() {
         className="pointer-events-none absolute -inset-px opacity-0 transition-all h-2000px"
         style={{
           opacity,
-          background: `radial-gradient(1500px circle at ${position.x}px ${position.y}px, rgba(255,255,255,.03), transparent 30%)`,
+          background: `radial-gradient(1500px circle at ${position.x}px ${position.y}px, rgba(0,0,255,.1), transparent 40%)`,
         }}
       />
 
