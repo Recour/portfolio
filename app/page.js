@@ -15,7 +15,7 @@ const contentful = require('contentful')
 const client = contentful.createClient({
   space: 'gnilfgmj3mc9',
   environment: 'master',
-  accessToken: '1IoJPAGkFl7WkgxHgDjboiMH2XqEV1mJNvf_E2YId_E'
+  accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN
 })
 
 export default function Home() {
@@ -168,8 +168,56 @@ export default function Home() {
     }
   }, [])
 
+  // Spotlight
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isFocused, setIsFocused] = useState(false);
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e) => {
+    if (!scrollRef.current || isFocused) return;
+
+    const scrollRefCurrent = scrollRef.current;
+    const rect = scrollRefCurrent.getBoundingClientRect();
+
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    setOpacity(1);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    setOpacity(0);
+  };
+
+  const handleMouseEnter = () => {
+    setOpacity(1);
+  };
+
+  const handleMouseLeave = () => {
+    setOpacity(0);
+  };
+
   return (
-    <div ref={scrollRef} className="px-6 lg:flex md:px-12 lg:px-48 lg:gap-3">
+    <div
+      ref={scrollRef}
+      className="px-6 lg:flex md:px-12 lg:px-48 lg:gap-3 relative"
+      onMouseMove={handleMouseMove}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div
+        className="pointer-events-none absolute -inset-px opacity-0 transition-all h-2000px"
+        style={{
+          opacity,
+          background: `radial-gradient(1500px circle at ${position.x}px ${position.y}px, rgba(255,255,255,.03), transparent 30%)`,
+        }}
+      />
+
       <header className='lg:w-1/2 lg:sticky lg:top-0 lg:max-h-screen py-12 lg:py-24 lg:flex lg:flex-col lg:justify-between text-slate-400'>
         <div className='flex flex-col gap-3'>
           <div className='text-4xl text-slate-100 font-bold'>{personalInfo.name}</div>
