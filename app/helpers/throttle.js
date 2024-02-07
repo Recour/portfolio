@@ -1,27 +1,14 @@
-function throttle(cb, delay) {
-  let wait = false;
-  let storedArgs = null;
-
-  function checkStoredArgs () {
-    if (storedArgs == null) {
-      wait = false;
-    } else {
-      cb(...storedArgs);
-      storedArgs = null;
-      setTimeout(checkStoredArgs, delay);
-    }
-  }
+function throttle(mainFunction, delay) {
+  let timerFlag = null
 
   return (...args) => {
-    if (wait) {
-      storedArgs = args;
-      return;
+    if (timerFlag === null) {
+      mainFunction(...args)
+      timerFlag = setTimeout(() => {
+        timerFlag = null
+      }, delay)
     }
-
-    cb(...args);
-    wait = true;
-    setTimeout(checkStoredArgs, delay);
-  }
+  };
 }
 
 export default throttle;

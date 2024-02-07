@@ -1,14 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react'
-import ContentfulImage from './components/ContenfulImage';
-import TechnologyTag from './components/TechnologyTag';
-import Project from './components/Project';
-import Image from 'next/image';
-import styles from './page.module.css';
-import Card from './components/Card';
-import About from './components/About';
-import throttle from './helpers/throttle';
+import { useCallback, useEffect, useRef, useState } from 'react'
+import ContentfulImage from './components/ContenfulImage'
+import TechnologyTag from './components/TechnologyTag'
+import Project from './components/Project'
+import Image from 'next/image'
+import styles from './page.module.css'
+import Card from './components/Card'
+import About from './components/About'
+import Spotlight from './components/Spotlight'
+import throttle from './helpers/throttle'
 
 const contentful = require('contentful')
 
@@ -25,13 +26,11 @@ export default function Home() {
     bio: '',
     profilePicture: null,
     aboutMe: '',
-  });
-  const [educations, setEducations] = useState([]);
-  const [experiences, setExperiences] = useState([]);
-  const [projects, setProjects] = useState([]);
+  })
+  const [educations, setEducations] = useState([])
+  const [experiences, setExperiences] = useState([])
+  const [projects, setProjects] = useState([])
 
-  const spotlightRef = useRef()
-  const scrollRef = useRef()
   const aboutLinkRef = useRef()
   const aboutSectionRef = useRef()
   const educationLinkRef = useRef()
@@ -50,7 +49,7 @@ export default function Home() {
     return (
       date1.getFullYear() === date2.getFullYear() &&
       date1.getMonth() === date2.getMonth()
-    );
+    )
   }
 
   // Personal info
@@ -60,7 +59,7 @@ export default function Home() {
         setPersonalInfo(entry.fields);
       })
       .catch(console.error)
-  }, []);
+  }, [])
 
   // Education
   useEffect(() => {
@@ -69,7 +68,7 @@ export default function Home() {
         setEducations(entry.items);
       })
       .catch(console.error)
-  }, []);
+  }, [])
 
   // Experience
   useEffect(() => {
@@ -78,7 +77,7 @@ export default function Home() {
         setExperiences(entry.items);
       })
       .catch(console.error)
-  }, []);
+  }, [])
 
   // Projects
   useEffect(() => {
@@ -87,7 +86,7 @@ export default function Home() {
         setProjects(entry.items);
       })
       .catch(console.error)
-  }, []);
+  }, [])
 
   // Highlight links on scroll
   useEffect(() => {
@@ -156,56 +155,22 @@ export default function Home() {
       }
     }
 
+    highlightLink()
+
     const handleScroll = e => {
       highlightLink()
     }
-    const scrollRefCurrent = scrollRef.current
-    document.addEventListener('scroll', throttle(handleScroll, 100))
+    const throttledHandleScroll = throttle(handleScroll, 50)
 
-    highlightLink()
+    window.addEventListener('scroll', throttledHandleScroll)
+
     return () => {
-      scrollRefCurrent.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('scroll', throttledHandleScroll)
     }
   }, [])
 
-  // Spotlight
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isFocused, setIsFocused] = useState(false);
-  const [opacity, setOpacity] = useState(0);
-
-  const handleMouseMove = (e) => {
-    if (!scrollRef.current || isFocused) return;
-
-    const scrollRefCurrent = scrollRef.current;
-    const rect = scrollRefCurrent.getBoundingClientRect();
-
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  const handleMouseEnter = () => {
-    setOpacity(1);
-  };
-
-  const handleMouseLeave = () => {
-    setOpacity(0);
-  };
-
   return (
-    <div
-      ref={scrollRef}
-      className="px-6 lg:flex md:px-12 lg:px-48 lg:gap-3 relative"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div
-        className="pointer-events-none absolute -inset-px opacity-0 transition-all h-2000px"
-        style={{
-          opacity,
-          background: `radial-gradient(1500px circle at ${position.x}px ${position.y}px, rgba(0,0,255,.1), transparent 40%)`,
-        }}
-      />
-
+    <Spotlight className='px-6 lg:flex md:px-12 lg:px-24 lg:gap-3 xl:px-48 relative'>
       <header className='lg:w-1/2 lg:sticky lg:top-0 lg:max-h-screen py-12 lg:py-24 lg:flex lg:flex-col lg:justify-between text-slate-400'>
         <div className='flex flex-col gap-3'>
           <div className='text-4xl text-slate-100 font-bold'>{personalInfo.name}</div>
@@ -332,6 +297,6 @@ export default function Home() {
           )}
         </section>
       </main>
-    </div>
+    </Spotlight>
   )
 }
