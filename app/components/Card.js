@@ -7,7 +7,7 @@ const Card = ({ children, link }) => {
       target='_blank'
       rel='noreferrer noopener'
     >
-      <div className='rounded-xl px-6 lg:px-12 py-3 lg:py-6 hover:bg-cyan-900/10 hover:shadow-xl transition-all cursor-pointer group'>
+      <div className='rounded-xl lg:px-12 lg:py-6 lg:hover:bg-cyan-900/10 lg:hover:shadow-xl transition-all cursor-pointer group'>
         {children}
       </div>
     </a>

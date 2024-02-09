@@ -223,19 +223,20 @@ export default function Home() {
         </section>
 
         <section id='education' ref={educationSectionRef} className='mt-24'>
+          <div className='text-slate-200 uppercase tracking-tighter text-sm font-medium'>Education</div>
           {educations
             .sort((a,b) => new Date(b.fields.graduationDate) - new Date(a.fields.graduationDate))
             .map((education, index) =>
               <div key={index} className='my-6 first:mt-0'>
                 <Card link={education.fields.institutionLink}>
-                  <div className='flex'>
-                    <div className='w-1/3'>
+                  <div className='lg:flex'>
+                    <div className='lg:w-1/3'>
                       <div className='text-xs  text-slate-400 uppercase font-medium'>
                         {new Date(education.fields.graduationDate).toLocaleString('en-US', localeStringOptions)}
                       </div>
                     </div>
 
-                    <div className='w-2/3 ml-9'>
+                    <div className='lg:w-2/3 lg:ml-9'>
                       <div className='text-lg text-slate-200 leading-5 group-hover:text-cyan-200 transition-all'>{education.fields.degree}</div>
                       <div className='text-xs text-slate-400 mt-1'>
                         {education.fields.institution} · {education.fields.location}
@@ -251,10 +252,10 @@ export default function Home() {
             {experiences
               .sort((a,b) => new Date(b.fields.startDate) - new Date(a.fields.startDate))
               .map((experience, index) =>
-                <div key={index} className='my-6 first:mt-0 hover:!opacity-100 group-hover/list:opacity-50 transition-all'>
+                <div key={index} className='my-12 lg:my-6 first:mt-0 lg:hover:!opacity-100 lg:group-hover/list:opacity-50 transition-all'>
                   <Card link={experience.fields.companyLink}>
-                    <div className='flex'>
-                      <div className='w-1/3'>
+                    <div className='lg:flex'>
+                      <div className='lg:w-1/3'>
                         <div className='text-xs  text-slate-400 uppercase font-medium'>
                           <span>{new Date(experience.fields.startDate).toLocaleString('en-US', localeStringOptions)}</span>
                           {!areDatesSameMonth(new Date(experience.fields.startDate), new Date(experience.fields.endDate)) &&
@@ -266,7 +267,7 @@ export default function Home() {
                         </div>
                       </div>
 
-                      <div className='w-2/3 ml-9'>
+                      <div className='lg:w-2/3 lg:ml-9'>
                         <div className='text-lg text-slate-200 leading-5 group-hover:text-cyan-200 transition-all'>{experience.fields.title}</div>
                         <div className='text-xs text-slate-400 mt-1'>
                           {experience.fields.company} · {experience.fields.location}
@@ -291,7 +292,7 @@ export default function Home() {
           {projects
             .sort((a,b) => new Date(b.fields.date) - new Date(a.fields.date))
             .map((project, index) =>
-              <div key={index} className='my-6 first:mt-0 last:mb-0 hover:!opacity-100 group-hover/list:opacity-50 transition-all'>
+              <div key={index} className='my-12 lg:my-6 first:mt-0 last:mb-0 lg:hover:!opacity-100 lg:group-hover/list:opacity-50 transition-all'>
                 <Project project={project} />
               </div>
           )}

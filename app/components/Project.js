@@ -22,15 +22,21 @@ const Project = ({ project }) => {
 
   return (
     <Card link={cardLink.fields.link}>
-      <div className='flex'>
-        <div className='w-1/3 flex justify-center items-center'>     
+      <div className='lg:flex'>
+        <div className='hidden lg:flex w-1/3 justify-center items-center'>     
           {project.fields.images &&
             <ContentfulImage image={project.fields.images[0]} />
           }
         </div>
 
-        <div className='w-2/3 ml-9'>
+        <div className='lg:w-2/3 lg:ml-9'>
           <div className='text-lg text-slate-200 group-hover:text-cyan-200 transition-all'>{project.fields.title}</div>
+
+          <div className='flex lg:hidden my-4'>
+            {project.fields.images &&
+              <ContentfulImage image={project.fields.images[0]} />
+            }
+          </div>
 
           <div className='text-sm text-slate-400 my-4'>{project.fields.description}</div>
 
