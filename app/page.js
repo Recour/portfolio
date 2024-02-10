@@ -172,9 +172,9 @@ export default function Home() {
 
   return (
     <Spotlight className='px-6 lg:flex md:px-12 lg:px-24 lg:gap-3 xl:px-48 relative'>
-      <header className='lg:w-1/2 lg:sticky lg:top-0 lg:max-h-screen py-12 lg:py-24 lg:flex lg:flex-col lg:justify-between text-slate-400'>
+      <header className='lg:w-1/2 lg:sticky lg:top-0 lg:max-h-screen py-12 md:py-24 lg:flex lg:flex-col lg:justify-between text-slate-400'>
         <div className='flex flex-col gap-3'>
-          <div className='text-4xl text-slate-100 font-bold'>{personalInfo.name}</div>
+          <div className='text-4xl text-slate-100 font-bold tracking-tight'>{personalInfo.name}</div>
           <div className='text-xl text-slate-200 font-medium'>{personalInfo.title}</div>
           <div className='text-md'>{personalInfo.bio}</div>
 
@@ -219,7 +219,7 @@ export default function Home() {
       </header>
 
       <main className='lg:w-1/2 pb-24 lg:py-24'>
-        <section id='about' ref={aboutSectionRef} className='text-sm text-slate-400 flex flex-col gap-6'>
+        <section id='about' ref={aboutSectionRef} className='text-sm text-slate-400 tracking-wide flex flex-col gap-6'>
           <SectionTitle text='About' />
           <About aboutDocument={personalInfo.about} />
         </section>
@@ -231,14 +231,14 @@ export default function Home() {
             .map((education, index) =>
               <div key={index} className='mt-12 first:mt-0'>
                 <Card link={education.fields.institutionLink}>
-                  <div className='lg:flex'>
-                    <div className='lg:w-1/3 mb-4'>
+                  <div className='md:flex'>
+                    <div className='md:w-1/5 lg:w-1/3 mb-4'>
                       <div className='text-xs  text-slate-400 uppercase font-medium'>
                         {new Date(education.fields.graduationDate).toLocaleString('en-US', localeStringOptions)}
                       </div>
                     </div>
 
-                    <div className='lg:w-2/3 lg:ml-9'>
+                    <div className='md:w-4/5 lg:w-2/3 md:ml-9'>
                       <div className='text-lg text-slate-200 leading-5 group-hover:text-cyan-200 transition-all'>{education.fields.degree}</div>
                       <div className='text-xs text-slate-400 fill-slate-400 mt-1'>
                         {education.fields.institution} · {education.fields.location}
@@ -260,8 +260,8 @@ export default function Home() {
             .map((experience, index) =>
               <div key={index} className='mt-12 first:mt-0 lg:hover:!opacity-100 lg:group-hover/list:opacity-50 transition-all'>
                 <Card link={experience.fields.companyLink}>
-                  <div className='lg:flex'>
-                    <div className='lg:w-1/3 mb-4'>
+                  <div className='md:flex'>
+                    <div className='md:w-1/5 lg:w-1/3 mb-4'>
                       <div className='text-xs  text-slate-400 uppercase font-medium'>
                         <span>{new Date(experience.fields.startDate).toLocaleString('en-US', localeStringOptions)}</span>
                         {!areDatesSameMonth(new Date(experience.fields.startDate), new Date(experience.fields.endDate)) &&
@@ -273,7 +273,7 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className='lg:w-2/3 lg:ml-9'>
+                    <div className='md: w-4/5 lg:w-2/3 md:ml-9'>
                       <div className='text-lg leading-5 text-slate-200 group-hover:text-cyan-200 transition-all'>{experience.fields.title}</div>
                       <div className='text-xs text-slate-400 fill-slate-400 mt-1'>
                         <span>

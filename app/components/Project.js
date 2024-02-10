@@ -22,14 +22,14 @@ const Project = ({ project }) => {
 
   return (
     <Card link={cardLink.fields.link}>
-      <div className='lg:flex'>
-        <div className='hidden lg:flex w-1/3 justify-center items-center'>     
+      <div className='md:flex'>
+        <div className='hidden md:flex w-1/3 justify-center items-center'>     
           {project.fields.images &&
             <ContentfulImage className='rounded border-2 border-slate-200/10 group-hover:border-slate-200/30 transition-all' image={project.fields.images[0]} />
           }
         </div>
 
-        <div className='lg:w-2/3 lg:ml-9'>
+        <div className='md:w-2/3 md:ml-9'>
           <div className='*:text-slate-200 *:fill-slate-200 *:group-hover:text-cyan-200 *:group-hover:fill-cyan-200 *:transition-all'>
             <span className='text-lg leading-5'>{project.fields.title}</span>
             <svg className='inline mb-1 ml-1' xmlns='http://www.w3.org/2000/svg'  viewBox='0 0 30 30' width='17' height='17'>
@@ -37,9 +37,9 @@ const Project = ({ project }) => {
             </svg>
           </div>
 
-          <div className='flex lg:hidden my-4'>
+          <div className='flex md:hidden my-4'>
             {project.fields.images &&
-              <ContentfulImage image={project.fields.images[0]} />
+              <ContentfulImage className='rounded' image={project.fields.images[0]} />
             }
           </div>
 
