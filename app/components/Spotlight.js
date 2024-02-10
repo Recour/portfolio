@@ -43,7 +43,7 @@ const Spotlight = ({ children, className }) => {
       className={className}
     >
       <div
-        className="pointer-events-none absolute -inset-px opacity-0 transition-all"
+        className="pointer-events-none lg:absolute -inset-px opacity-0 transition-all"
         style={{
           opacity,
           background: `radial-gradient(1500px circle at ${position.x}px ${position.y}px, rgba(0,0,255,.1), transparent 40%)`,
