@@ -171,7 +171,7 @@ export default function Home() {
   }, [])
 
   return (
-    <Spotlight className='px-6 lg:flex md:px-12 lg:px-24 lg:gap-3 xl:px-48 relative'>
+    <Spotlight className='px-6 lg:flex md:px-12 lg:px-24 lg:gap-3 xl:px-48 2xl:px-96 relative'>
       <header className='lg:w-1/2 lg:sticky lg:top-0 lg:max-h-screen py-12 md:py-24 lg:flex lg:flex-col lg:justify-between text-slate-400'>
         <div className='flex flex-col gap-3'>
           <div className='text-4xl text-slate-100 font-bold tracking-tight'>{personalInfo.name}</div>
