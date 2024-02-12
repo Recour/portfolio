@@ -16,8 +16,8 @@ const options = {
   }
 }
 
-const About = ({ aboutDocument }) => {
-  return documentToReactComponents(aboutDocument, options);
+const ContentfulText = ({ document }) => {
+  return documentToReactComponents(document, options);
 }
 
-export default About;
+export default ContentfulText;

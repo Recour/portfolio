@@ -7,7 +7,7 @@ import Project from './components/Project'
 import Image from 'next/image'
 import styles from './page.module.css'
 import Card from './components/Card'
-import About from './components/About'
+import ContentfulText from './components/ContentfulText'
 import Spotlight from './components/Spotlight'
 import throttle from './helpers/throttle'
 import SectionTitle from './components/SectionTitle';
@@ -21,16 +21,11 @@ const client = contentful.createClient({
 })
 
 export default function Home() {
-  const [personalInfo, setPersonalInfo] = useState({
-    name: '',
-    title: '',
-    bio: '',
-    profilePicture: null,
-    aboutMe: '',
-  })
+  const [personalInfo, setPersonalInfo] = useState(null)
   const [educations, setEducations] = useState([])
   const [experiences, setExperiences] = useState([])
   const [projects, setProjects] = useState([])
+  const [meta, setMeta] = useState(null)
 
   const aboutLinkRef = useRef()
   const aboutSectionRef = useRef()
@@ -57,7 +52,7 @@ export default function Home() {
   useEffect(() => {
     client.getEntry('4QvSOM4V73JdVEoDAjAlY7')
       .then((entry) => {
-        setPersonalInfo(entry.fields);
+        setPersonalInfo(entry);
       })
       .catch(console.error)
   }, [])
@@ -88,6 +83,15 @@ export default function Home() {
       })
       .catch(console.error)
   }, [])
+
+    // Meta
+    useEffect(() => {
+      client.getEntry('1e6DSVNeWdFC97yRfAYESp')
+        .then((entry) => {
+          setMeta(entry);
+        })
+        .catch(console.error)
+    }, [])
 
   // Highlight links on scroll
   useEffect(() => {
@@ -174,9 +178,9 @@ export default function Home() {
     <Spotlight className='px-6 lg:flex md:px-12 lg:px-24 lg:gap-3 xl:px-48 2xl:px-96 relative'>
       <header className='lg:w-1/2 lg:sticky lg:top-0 lg:max-h-screen py-12 md:py-24 lg:flex lg:flex-col lg:justify-between text-slate-400'>
         <div className='flex flex-col gap-3'>
-          <div className='text-4xl text-slate-100 font-bold tracking-tight'>{personalInfo.name}</div>
-          <div className='text-xl text-slate-200 font-medium'>{personalInfo.title}</div>
-          <div className='text-md'>{personalInfo.bio}</div>
+          <div className='text-4xl text-slate-100 font-bold tracking-tight'>{personalInfo?.fields.name}</div>
+          <div className='text-xl text-slate-200 font-medium'>{personalInfo?.fields.title}</div>
+          <div className='text-md'>{personalInfo?.fields.bio}</div>
 
           <nav className='hidden mt-24 lg:flex flex-col gap-6 text-xs uppercase font-bold list-none tracking-widest'>
             <li className={styles.nav_item} ref={aboutLinkRef}>
@@ -221,7 +225,7 @@ export default function Home() {
       <main className='lg:w-1/2 pb-24 lg:py-24'>
         <section id='about' ref={aboutSectionRef} className='text-md text-slate-400 flex flex-col gap-6'>
           <SectionTitle text='About' />
-          <About aboutDocument={personalInfo.about} />
+          <ContentfulText document={personalInfo?.fields.about} />
         </section>
 
         <section id='education' ref={educationSectionRef} className='mt-24'>
@@ -309,6 +313,12 @@ export default function Home() {
                 <Project project={project} />
               </div>
           )}
+        </section>
+
+        <section className='mt-24'>
+          <div className='rounded-xl p-3 bg-cyan-400/10 text-slate-400 text-sm'>
+            <ContentfulText document={meta?.fields.description} />
+          </div>
         </section>
       </main>
     </Spotlight>
