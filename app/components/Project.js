@@ -39,7 +39,7 @@ const Project = ({ project }) => {
 
           <div className='flex md:hidden my-4'>
             {project.fields.images &&
-              <ContentfulImage className='rounded' image={project.fields.images[0]} />
+              <ContentfulImage className='rounded border-2 border-slate-200/30' image={project.fields.images[0]} />
             }
           </div>
 

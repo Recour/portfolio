@@ -356,10 +356,18 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className='md:w-4/5 lg:w-2/3 md:ml-9'>
-                      <div className='text-lg leading-5 text-slate-200 group-hover:text-cyan-200 transition-all'>{certificate.fields.name}</div>
-                      <div className='text-xs text-slate-400 fill-slate-400 mt-1'>
-                        {certificate.fields.link.fields.text} · {certificate.fields.hours} hours
+                    <div className='flex items-center gap-4 md:w-4/5 lg:w-2/3 md:ml-9'>
+                      <div className='w-1/5'>
+                        {certificate.fields.image &&
+                          <ContentfulImage className='rounded border-2 border-slate-200/30 md:border-slate-200/10 md:group-hover:border-slate-200/30 transition-all' image={certificate.fields.image} />
+                        }
+                      </div>
+
+                      <div className='w-4/5'>
+                        <div className='text-lg leading-5 text-slate-200 group-hover:text-cyan-200 transition-all'>{certificate.fields.name}</div>
+                        <div className='text-xs text-slate-400 fill-slate-400 mt-1'>
+                          {certificate.fields.link.fields.text} · {certificate.fields.hours} hours
+                        </div>
                       </div>
                     </div>
                   </div>
