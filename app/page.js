@@ -25,6 +25,7 @@ export default function Home() {
   const [educations, setEducations] = useState([])
   const [experiences, setExperiences] = useState([])
   const [projects, setProjects] = useState([])
+  const [certificates, setCertificates] = useState([])
   const [meta, setMeta] = useState(null)
 
   const aboutLinkRef = useRef()
@@ -35,6 +36,8 @@ export default function Home() {
   const experienceSectionRef = useRef()
   const projectsLinkRef = useRef()
   const projectsSectionRef = useRef()
+  const certificatesLinkRef = useRef()
+  const certificatesSectionRef = useRef()
 
   const localeStringOptions = {
     year: 'numeric',
@@ -84,14 +87,23 @@ export default function Home() {
       .catch(console.error)
   }, [])
 
-    // Meta
-    useEffect(() => {
-      client.getEntry('1e6DSVNeWdFC97yRfAYESp')
-        .then((entry) => {
-          setMeta(entry);
-        })
-        .catch(console.error)
-    }, [])
+  // Certificates
+  useEffect(() => {
+    client.getEntries({content_type: 'certificate'})
+      .then((entry) => {
+        setCertificates(entry.items);
+      })
+      .catch(console.error)
+  }, [])
+
+  // Meta
+  useEffect(() => {
+    client.getEntry('1e6DSVNeWdFC97yRfAYESp')
+      .then((entry) => {
+        setMeta(entry);
+      })
+      .catch(console.error)
+  }, [])
 
   // Highlight links on scroll
   useEffect(() => {
@@ -126,6 +138,16 @@ export default function Home() {
       }
 
       if (
+        certificatesLinkRef.current.classList.contains(
+          styles.nav_itemActive
+        )
+      ) {
+        certificatesLinkRef.current.classList.remove(
+          styles.nav_itemActive
+        )
+      }
+
+      if (
         projectsLinkRef.current.classList.contains(
           styles.nav_itemActive
         )
@@ -151,6 +173,12 @@ export default function Home() {
         experienceSectionRef.current.getBoundingClientRect().bottom >=0
       ) {
         experienceLinkRef.current.classList.add(
+          styles.nav_itemActive
+        )
+      } else if (
+        certificatesSectionRef.current.getBoundingClientRect().bottom >=0
+      ) {
+        certificatesLinkRef.current.classList.add(
           styles.nav_itemActive
         )
       } else {
@@ -193,6 +221,10 @@ export default function Home() {
 
             <li className={styles.nav_item} ref={experienceLinkRef}>
               <a href='#experience' className='hover:text-slate-200'>Experience</a>
+            </li>
+
+            <li className={styles.nav_item} ref={certificatesLinkRef}>
+              <a href='#certificates' className='hover:text-slate-200'>Certificates</a>
             </li>
 
             <li className={styles.nav_item} ref={projectsLinkRef}>
@@ -308,6 +340,32 @@ export default function Home() {
               </div>
             )
           }
+        </section>
+
+        <section id='certificates' ref={certificatesSectionRef} className='mt-24 group/list'>
+          <SectionTitle text='Certificates' />
+          {certificates
+            .sort((a,b) => new Date(b.fields.completionDate) - new Date(a.fields.completionDate))
+            .map((certificate, index) =>
+              <div key={index} className='my-12 lg:my-6 first:mt-0 last:mb-0 lg:hover:!opacity-100 lg:group-hover/list:opacity-50 transition-all'>
+                <Card link={certificate.fields.link.fields.link}>
+                  <div className='md:flex'>
+                    <div className='md:w-1/5 lg:w-1/3 mb-4'>
+                      <div className='text-xs  text-slate-400 uppercase font-medium'>
+                        {new Date(certificate.fields.completionDate).toLocaleString('en-US', localeStringOptions)}
+                      </div>
+                    </div>
+
+                    <div className='md:w-4/5 lg:w-2/3 md:ml-9'>
+                      <div className='text-lg leading-5 text-slate-200 group-hover:text-cyan-200 transition-all'>{certificate.fields.name}</div>
+                      <div className='text-xs text-slate-400 fill-slate-400 mt-1'>
+                        {certificate.fields.link.fields.text} · {certificate.fields.hours} hours
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+          )}
         </section>
 
         <section id='projects' ref={projectsSectionRef} className='mt-24 group/list'>
